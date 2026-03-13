@@ -369,6 +369,23 @@
     color: #c06060;
   }
 
+  #change-key-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 0.3rem 0.8rem;
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.7rem;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    transition: all 0.2s;
+  }
+
+  #change-key-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
   .saving-indicator {
     color: var(--text-dim);
     font-size: 0.75rem;
@@ -396,6 +413,7 @@
   <span class="session-info" id="session-label">session —</span>
   <button id="memory-btn" onclick="showMemory()">mémoire</button>
   <button id="end-session-btn" onclick="endSession()">clore la session</button>
+  <button id="change-key-btn" onclick="changeKey()">clé API</button>
 </div>
 
 <div id="messages" style="display:none"></div>
@@ -527,6 +545,18 @@ Réponds uniquement en JSON valide, sans markdown, sans backticks :
 Chaque champ : 2-4 phrases. Rien de performatif.`;
     return base;
   };
+
+  function changeKey() {
+    if (!confirm('Changer la clé API ? La mémoire d'Écho sera conservée.')) return;
+    localStorage.removeItem(API_KEY_STORAGE);
+    // Reset interface
+    document.getElementById('setup-screen').style.display = 'flex';
+    document.getElementById('header').style.display = 'none';
+    document.getElementById('messages').style.display = 'none';
+    document.getElementById('input-area').style.display = 'none';
+    document.getElementById('api-key-input').value = '';
+    conversationHistory = [];
+  }
 
   function tryParseIdentity(raw) {
     try { return JSON.parse(raw); } catch(e) { return null; }
